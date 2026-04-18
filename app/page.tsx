@@ -24,6 +24,7 @@ export default function Page() {
           <p>We&apos;ve already added the button component for you.</p>
           <Button className="mt-2">Button</Button>
           <Button className="mt-2">Sign in</Button>
+          <Button className="mt-2">Sign out</Button>
           <Button className="mt-2">Sign Up</Button>
         </div>
         <div className="font-mono text-xs text-muted-foreground">
