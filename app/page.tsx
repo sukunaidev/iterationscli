@@ -6,9 +6,9 @@ import * as React from "react"
 import { Progress } from "@/components/ui/progress"
 
 export default function Page() {
-  
 
-const [progress, setProgress] = React.useState(13)
+
+  const [progress, setProgress] = React.useState(13)
 
   React.useEffect(() => {
     const timer = setTimeout(() => setProgress(66), 500)
@@ -24,13 +24,14 @@ const [progress, setProgress] = React.useState(13)
           <p>We&apos;ve already added the button component for you.</p>
           <Button className="mt-2">Button</Button>
           <Button className="mt-2">Sign in</Button>
+          <Button className="mt-2">Sign Up</Button>
         </div>
         <div className="font-mono text-xs text-muted-foreground">
           (Press <kbd>d</kbd> to toggle dark mode)
         </div>
       </div>
-  
-<Progress value={progress} className="w-[60%]" />
+
+      <Progress value={progress} className="w-[60%]" />
 
     </div>
   )
