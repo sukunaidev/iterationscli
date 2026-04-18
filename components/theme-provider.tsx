@@ -43,8 +43,12 @@ function ThemeHotkey() {
         return
       }
 
-      if (event.metaKey || event.ctrlKey || event.altKey) {
+      if (event.metaKey || event.altKey) {
         return
+      }
+
+      if (event.ctrlKey && event.key.toLowerCase() === "y"){
+        //open the term
       }
 
       if (event.key.toLowerCase() !== "d") {
