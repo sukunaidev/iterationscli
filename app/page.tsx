@@ -1,6 +1,20 @@
+"use client"
 import { Button } from "@/components/ui/button"
 
+import * as React from "react"
+
+import { Progress } from "@/components/ui/progress"
+
 export default function Page() {
+  
+
+const [progress, setProgress] = React.useState(13)
+
+  React.useEffect(() => {
+    const timer = setTimeout(() => setProgress(66), 500)
+    return () => clearTimeout(timer)
+  }, [])
+
   return (
     <div className="flex min-h-svh p-6">
       <div className="flex max-w-md min-w-0 flex-col gap-4 text-sm leading-loose">
@@ -9,11 +23,15 @@ export default function Page() {
           <p>You may now add components and start building.</p>
           <p>We&apos;ve already added the button component for you.</p>
           <Button className="mt-2">Button</Button>
+          <Button className="mt-2">Sign in</Button>
         </div>
         <div className="font-mono text-xs text-muted-foreground">
           (Press <kbd>d</kbd> to toggle dark mode)
         </div>
       </div>
+  
+<Progress value={progress} className="w-[60%]" />
+
     </div>
   )
 }
