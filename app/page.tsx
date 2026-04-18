@@ -24,6 +24,7 @@ const [progress, setProgress] = React.useState(13)
           <p>We&apos;ve already added the button component for you.</p>
           <Button className="mt-2">Button</Button>
           <Button className="mt-2">Sign in</Button>
+          <Button className="mt-2">Sign out</Button>
         </div>
         <div className="font-mono text-xs text-muted-foreground">
           (Press <kbd>d</kbd> to toggle dark mode)
