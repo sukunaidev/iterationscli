@@ -81,7 +81,7 @@ function CommandInput({
           {...props}
         />
         <InputGroupAddon>
-          <RiSearchLine className="size-4 shrink-0 opacity-50" />
+          <p>{">"}</p>
         </InputGroupAddon>
       </InputGroup>
     </div>

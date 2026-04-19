@@ -14,16 +14,15 @@ export default function Page() {
           <Button className="mt-2">Sign in</Button>
           <Button className="mt-2">Sign out</Button>
           <Button className="mt-2">Sign Up</Button>
-          
+
         </div>
-          
-          
+
         <div className="font-mono text-xs text-muted-foreground">
           (Press <kbd>d</kbd> to toggle dark mode)
         </div>
 
         <div className="font-mono text-xs text-muted-foreground">
-          (Press 
+          (Press
           <kbd>
             <kbd>
               ctrl
@@ -34,6 +33,7 @@ export default function Page() {
             </kbd>
           </kbd> to toggle the terminal)
         </div>
+
       </div>
     </div>
   )

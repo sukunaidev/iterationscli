@@ -48,14 +48,14 @@ function TerminalHotkey({ setTerminalState }: { setTerminalState: Dispatch<SetSt
         return
       }
 
-      if (event.ctrlKey && event.key.toLowerCase() === "y"){
+      if (event.ctrlKey && event.key.toLowerCase() === "y") {
         //open the term
         setTerminalState((prev) => ({
           ...prev,
           active: !prev.active
         }))
       }
-      
+
       // might not be needed
       if (isTypingTarget(event.target)) {
         return
@@ -74,48 +74,61 @@ function TerminalHotkey({ setTerminalState }: { setTerminalState: Dispatch<SetSt
 }
 
 
-interface TerminalContextProviderProps{
+interface TerminalContextProviderProps {
   children: React.ReactNode
 }
 
-function TerminalContextProvider({ children }: TerminalContextProviderProps){
+function TerminalContextProvider({ children }: TerminalContextProviderProps) {
   const [terminalState, setTerminalState] = useState<TerminalContextValue>({
     active: false,
     history: ''
   })
+
+
 
   return (
     <TerminalContext.Provider value={{
       active: false,
       history: ""
     }}>
-      <TerminalHotkey setTerminalState={setTerminalState}/>
-      {terminalState.active && <TerminalWindow />}
+      <TerminalHotkey setTerminalState={setTerminalState} />
+      {terminalState.active && <TerminalWindow setTerminalState={setTerminalState} terminalState={terminalState} />}
       {children}
     </TerminalContext.Provider>
   )
 }
 
-function TerminalWindow(){
-  
+
+interface terminalWindowProps {
+  terminalState: TerminalContextValue;
+  setTerminalState: Dispatch<SetStateAction<TerminalContextValue>>;
+};
+
+function TerminalWindow(props: terminalWindowProps) {
+
   return (
-    <Command className="max-w-sm rounded-lg border">
-      <CommandInput placeholder="Type a command or search..." />
-      <CommandList>
-        <CommandEmpty>No results found.</CommandEmpty>
-        <CommandGroup heading="Suggestions">
-          <CommandItem>Calendar</CommandItem>
-          <CommandItem>Search Emoji</CommandItem>
-          <CommandItem>Calculator</CommandItem>
-        </CommandGroup>
-        <CommandSeparator />
-        <CommandGroup heading="Settings">
-          <CommandItem>Profile</CommandItem>
-          <CommandItem>Billing</CommandItem>
-          <CommandItem>Settings</CommandItem>
-        </CommandGroup>
-      </CommandList>
-    </Command>
+    <div className="flex flex-col gap-4">
+      <CommandDialog open={props.terminalState.active} >
+        <Command className="max-w-sm rounded-lg border">
+          <CommandInput placeholder="Type a command or search..." onChangeCapture={(event) => { console.log(event.currentTarget.value) }} />
+          <CommandList>
+            <CommandEmpty>No results found.</CommandEmpty>
+            <CommandGroup heading="Suggestions">
+              <CommandItem>Calendar</CommandItem>
+              <CommandItem>Search Emoji</CommandItem>
+              <CommandItem>Calculator</CommandItem>
+            </CommandGroup>
+            <CommandSeparator />
+            <CommandGroup heading="Settings">
+              <CommandItem>Profile</CommandItem>
+              <CommandItem>Billing</CommandItem>
+              <CommandItem>Settings</CommandItem>
+            </CommandGroup>
+          </CommandList>
+        </Command>
+      </CommandDialog >
+    </div>
+
   )
 }
 
