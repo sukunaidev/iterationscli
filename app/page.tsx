@@ -1,6 +1,8 @@
 "use client"
 import { Button } from "@/components/ui/button"
 
+import SignUpPage from "@/components/auth/SignUp"
+
 export default function Page() {
   return (
     <div className="flex min-h-svh p-6">
@@ -16,7 +18,7 @@ export default function Page() {
           <Button className="mt-2">Sign Up</Button>
 
         </div>
-
+        y
         <div className="font-mono text-xs text-muted-foreground">
           (Press <kbd>d</kbd> to toggle dark mode)
         </div>
@@ -34,6 +36,9 @@ export default function Page() {
           </kbd> to toggle the terminal)
         </div>
 
+        <div>
+          <SignUpPage />
+        </div>
       </div>
     </div>
   )

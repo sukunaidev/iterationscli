@@ -113,10 +113,15 @@ function TerminalWindow(props: terminalWindowProps) {
           <CommandInput placeholder="Type a command or search..." onChangeCapture={(event) => { console.log(event.currentTarget.value) }} />
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
-            <CommandGroup heading="Suggestions">
-              <CommandItem>Calendar</CommandItem>
-              <CommandItem>Search Emoji</CommandItem>
-              <CommandItem>Calculator</CommandItem>
+            <CommandGroup heading="Auth">
+              <CommandItem>signin</CommandItem>
+              <CommandItem>signup</CommandItem>
+
+            </CommandGroup>
+            <CommandGroup heading="Command Suggestions">
+              <CommandItem>help</CommandItem>
+              <CommandItem>create</CommandItem>
+              <CommandItem>edit</CommandItem>
             </CommandGroup>
             <CommandSeparator />
             <CommandGroup heading="Settings">
