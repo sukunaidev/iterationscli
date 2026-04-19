@@ -107,9 +107,9 @@ interface terminalWindowProps {
 function TerminalWindow(props: terminalWindowProps) {
 
   return (
-    <div className="flex flex-col gap-4">
+    <div >
       <CommandDialog open={props.terminalState.active} >
-        <Command className="max-w-sm rounded-lg border">
+        <Command className="">
           <CommandInput placeholder="Type a command or search..." onChangeCapture={(event) => { console.log(event.currentTarget.value) }} />
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
