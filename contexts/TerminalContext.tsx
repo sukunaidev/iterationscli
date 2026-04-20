@@ -108,9 +108,19 @@ function TerminalWindow(props: terminalWindowProps) {
 
   return (
     <div >
-      <CommandDialog open={props.terminalState.active} >
+      <CommandDialog 
+        open={props.terminalState.active} 
+        onOpenChange={() => props.setTerminalState((prev) => ({ ...prev, active: !prev.active  }))}
+      >
         <Command className="">
-          <CommandInput placeholder="Type a command or search..." onChangeCapture={(event) => { console.log(event.currentTarget.value) }} />
+          <CommandInput 
+            placeholder="Type a command or search..." 
+            
+            onChangeCapture={(event) => { 
+              console.log(event.currentTarget.value)
+
+            }
+          } />
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
             <CommandGroup heading="Auth">
