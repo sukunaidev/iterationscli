@@ -46,10 +46,14 @@ function Hero() {
             handleTyping(0, nextIndex, false);
           }, typingSpeed);
           clearInterval(cursorBlinkInterval);
+
+          setFinishedWriting(false);
         } else {
           timeout = setTimeout(() => {
             handleTyping(currentCharIndex - 1, currentPhraseIndex, true);
           }, deletingSpeed);
+          clearInterval(cursorBlinkInterval)
+          setFinishedWriting(false);
         }
       }
     };
