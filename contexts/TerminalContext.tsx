@@ -10,15 +10,11 @@ import {
   CommandSeparator,
   CommandShortcut,
 } from "@/components/ui/command"
+import { TerminalContextValue } from "@/types/terminal";
 
 import { createContext, Dispatch, SetStateAction, useEffect, useState } from "react"
 
-export interface TerminalContextValue {
-  history: string;
-  active: boolean;
-};
-
-const TerminalContext = createContext<TerminalContextValue>({
+export const TerminalContext = createContext<TerminalContextValue>({
   history: '',
   active: false
 });
