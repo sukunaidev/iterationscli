@@ -30,9 +30,7 @@ function SignUpPage() {
                         <AlertDialogTitle>Is this information correct?</AlertDialogTitle>
 
                         <AlertDialogTitle>Username:</AlertDialogTitle>
-                        <ReactiveInput>
 
-                        </ReactiveInput>
                         <ReactiveInput></ReactiveInput>
 
 
