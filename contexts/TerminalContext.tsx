@@ -106,21 +106,24 @@ interface terminalWindowProps {
 
 function TerminalWindow(props: terminalWindowProps) {
 
+  const [command, setCommand] = useState("")
+
+
   return (
     <div >
-      <CommandDialog 
-        open={props.terminalState.active} 
-        onOpenChange={() => props.setTerminalState((prev) => ({ ...prev, active: !prev.active  }))}
+      <CommandDialog
+        open={props.terminalState.active}
+        onOpenChange={() => props.setTerminalState((prev) => ({ ...prev, active: !prev.active }))}
       >
         <Command className="">
-          <CommandInput 
-            placeholder="Type a command or search..." 
-            
-            onChangeCapture={(event) => { 
+          <CommandInput
+            placeholder="Type a command or search..."
+
+            onChangeCapture={(event) => {
               console.log(event.currentTarget.value)
 
             }
-          } />
+            } />
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
             <CommandGroup heading="Auth">
@@ -131,6 +134,7 @@ function TerminalWindow(props: terminalWindowProps) {
             <CommandGroup heading="Command Suggestions">
               <CommandItem>help</CommandItem>
               <CommandItem>create</CommandItem>
+              <CommandItem>kamako create</CommandItem>
               <CommandItem>edit</CommandItem>
             </CommandGroup>
             <CommandSeparator />

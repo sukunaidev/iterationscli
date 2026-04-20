@@ -2,44 +2,34 @@
 import { Button } from "@/components/ui/button"
 
 import SignUpPage from "@/components/auth/SignUp"
-
+import Hero from "@/components/marketing/Hero"
 export default function Page() {
   return (
-    <div className="flex min-h-svh p-6">
-      <div className="flex max-w-md min-w-0 flex-col gap-4 text-sm leading-loose">
-        <div>
 
-          <h1 className="font-medium">Project ready!</h1>
-          <p>You may now add components and start building.</p>
-          <p>We&apos;ve already added the button component for you.</p>
-          <Button className="mt-2">Button</Button>
-          <Button className="mt-2">Sign in</Button>
-          <Button className="mt-2">Sign out</Button>
-          <Button className="mt-2">Sign Up</Button>
 
-        </div>
-        y
-        <div className="font-mono text-xs text-muted-foreground">
-          (Press <kbd>d</kbd> to toggle dark mode)
-        </div>
 
-        <div className="font-mono text-xs text-muted-foreground">
-          (Press
-          <kbd>
-            <kbd>
-              ctrl
-            </kbd>
 
-            <kbd>
-              y
-            </kbd>
-          </kbd> to toggle the terminal)
-        </div>
 
-        <div>
-          <SignUpPage />
+    <div className="">
+      <div className=" bg-black flex justify-center">
+
+        <div className="flex-col ">
+
+          <div className=" text-gray-400 mt-4 text-5xl mt-10">{"1:10"}</div>
         </div>
       </div>
-    </div>
+
+      <Hero />
+
+      <div>
+
+        <div className="h-1/2 bg-white">
+          <Button className="mt-12">Features</Button>
+        </div>
+
+      </div>
+    </div >
+
+
   )
 }
