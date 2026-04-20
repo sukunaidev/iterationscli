@@ -4,6 +4,7 @@ import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { cn } from "@/lib/utils";
 import TerminalContextProvider from "@/contexts/TerminalContext";
+import { AuthenticateProvider } from "@/contexts/AuthenticateContext";
 
 const fontSans = Geist({
   subsets: ["latin"],
@@ -24,11 +25,13 @@ export default function RootLayout({
       className={cn("antialiased", fontSans.variable, "font-mono", jetbrainsMono.variable)}
     >
       <body>
-        <ThemeProvider>
-          <TerminalContextProvider>
-            {children}
-          </TerminalContextProvider>
-        </ThemeProvider>
+        <AuthenticateProvider>
+          <ThemeProvider>
+            <TerminalContextProvider>
+              {children}
+            </TerminalContextProvider>
+          </ThemeProvider>
+        </AuthenticateProvider>
       </body>
     </html>
   )
