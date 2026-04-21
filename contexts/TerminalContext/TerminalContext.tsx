@@ -11,6 +11,7 @@ import {
   CommandShortcut,
 } from "@/components/ui/command"
 import { TerminalContextValue } from "@/types/terminal";
+import { Commands, CommandName } from "./commands"
 
 import { createContext, Dispatch, SetStateAction, useEffect, useState } from "react"
 
@@ -101,7 +102,6 @@ interface terminalWindowProps {
 };
 
 function TerminalWindow(props: terminalWindowProps) {
-
   const [command, setCommand] = useState("")
 
 
@@ -111,7 +111,7 @@ function TerminalWindow(props: terminalWindowProps) {
         open={props.terminalState.active}
         onOpenChange={() => props.setTerminalState((prev) => ({ ...prev, active: !prev.active }))}
       >
-        <Command className="">
+        <Command>
           <CommandInput
             placeholder="Type a command or search..."
 
@@ -122,23 +122,28 @@ function TerminalWindow(props: terminalWindowProps) {
             } />
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
-            <CommandGroup heading="Auth">
-              <CommandItem>signin</CommandItem>
-              <CommandItem>signup</CommandItem>
-
-            </CommandGroup>
-            <CommandGroup heading="Command Suggestions">
-              <CommandItem>help</CommandItem>
-              <CommandItem>create</CommandItem>
-              <CommandItem>kamako create</CommandItem>
-              <CommandItem>edit</CommandItem>
-            </CommandGroup>
-            <CommandSeparator />
-            <CommandGroup heading="Settings">
-              <CommandItem>Profile</CommandItem>
-              <CommandItem>Billing</CommandItem>
-              <CommandItem>Settings</CommandItem>
-            </CommandGroup>
+            {Object.keys(Commands).map((cmd) =>{
+              const command = Commands[cmd as CommandName];
+              const sub_cmds = Object.values(command.sub_commands || {})
+              const has_subs = sub_cmds.length !== 0
+              if (has_subs){
+                return (
+                  <CommandGroup heading={Commands[cmd as CommandName].name}>
+                    {sub_cmds.map((sub_cmd)=> (
+                      <CommandItem key={sub_cmd.name} onClickCapture={() => console.log(sub_cmd)}>
+                        {sub_cmd.name}
+                        <span className="text-gray-500">{sub_cmd.usage}</span>
+                      </CommandItem>
+                    ) )}
+                  </CommandGroup>
+                )
+              }else{
+                return (
+                  <CommandItem>{command.name}<span className="text-gray-500">{command.usage}</span></CommandItem>
+                )
+              }
+            })}
+            
           </CommandList>
         </Command>
       </CommandDialog >
