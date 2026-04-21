@@ -17,7 +17,6 @@ export default function Page() {
           <Button className="mt-12">Features</Button>
         </div>
       </div>
-
       <Footer />
     </div >
   )
