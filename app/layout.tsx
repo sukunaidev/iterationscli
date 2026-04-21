@@ -3,7 +3,7 @@ import { Geist, Geist_Mono, JetBrains_Mono } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { cn } from "@/lib/utils";
-import TerminalContextProvider from "@/contexts/TerminalContext";
+import TerminalContextProvider from "@/contexts/TerminalContext/TerminalContext";
 import { AuthenticateProvider } from "@/contexts/AuthenticateContext";
 
 const fontSans = Geist({
