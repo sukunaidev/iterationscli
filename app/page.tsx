@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import Hero from "@/components/marketing/Hero"
 import Time from "@/components/Time"
 import Footer from "@/components/marketing/Footer"
+import Features from "@/components/marketing/Features"
 
 export default function Page() {
   
@@ -12,11 +13,7 @@ export default function Page() {
     <div className="">
       <Time />
       <Hero />
-      <div>
-        <div className="h-1/2 bg-white">
-          <Button className="mt-12">Features</Button>
-        </div>
-      </div>
+      <Features />
       <Footer />
     </div >
   )
