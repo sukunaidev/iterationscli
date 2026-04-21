@@ -3,8 +3,8 @@ import React from "react"
 import { Tldraw, Editor, toRichText } from "tldraw"
 import "tldraw/tldraw.css"
 
-function Page(){
-  const handleMount = (editor: Editor) => {
+function Page() {
+	const handleMount = (editor: Editor) => {
 		editor.createShape({
 			type: 'text',
 			x: 200,
@@ -21,11 +21,11 @@ function Page(){
 		})
 	}
 
-  return(
-    <div className="fixed inset-0">
-      <Tldraw onMount={handleMount}/>
-    </div>
-  )
+	return (
+		<div className="fixed inset-0">
+			<Tldraw onMount={handleMount} />
+		</div>
+	)
 }
 
 export default Page;
