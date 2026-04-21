@@ -1,6 +1,7 @@
 'use client'
 import React from "react"
-import { Tldraw, Editor, toRichText } from "tldraw"
+import { Tldraw, Editor, toRichText, TldrawEditorProps } from "tldraw"
+import { KamakoTool } from "@/components/tools/kamako"
 import "tldraw/tldraw.css"
 
 function Page() {
@@ -12,12 +13,6 @@ function Page() {
 			props: {
 				richText: toRichText('Hello world!'),
 			},
-		})
-
-		editor.selectAll()
-
-		editor.zoomToSelection({
-			animation: { duration: 5000 },
 		})
 	}
 
