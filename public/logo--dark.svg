@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 23.5107">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+        font-family: CascadiaCode-Roman, 'Cascadia Code';
+        font-size: 16.0105px;
+        font-variation-settings: 'wght' 400;
+      }
+
+      .cls-2 {
+        fill: none;
+        stroke: #fff;
+        stroke-miterlimit: 10;
+      }
+    </style>
+  </defs>
+  <g id="Layer_1-2" data-name="Layer 1">
+    <rect width="64" height="22.4213"/>
+    <text class="cls-1" transform="translate(5.728 16.5454) scale(1.0961 1)"><tspan x="0" y="0">&gt;ICLI</tspan></text>
+    <rect class="cls-2" x="2.5021" y="1.8865" width="58.9957" height="18.6483" rx="8.7014" ry="8.7014"/>
+  </g>
+</svg>
