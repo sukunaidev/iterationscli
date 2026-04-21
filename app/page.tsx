@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button"
 
 import Hero from "@/components/marketing/Hero"
 import Time from "@/components/Time"
+import Footer from "@/components/marketing/Footer"
 
 export default function Page() {
   
@@ -16,6 +17,8 @@ export default function Page() {
           <Button className="mt-12">Features</Button>
         </div>
       </div>
+
+      <Footer />
     </div >
   )
 }
