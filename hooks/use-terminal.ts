@@ -1,5 +1,5 @@
 import { TerminalContextValue } from "@/types/terminal";
-import { TerminalContext } from "@/contexts/TerminalContext";
+import { TerminalContext } from "@/contexts/TerminalContext/TerminalContext";
 import { useContext } from "react";
 
 

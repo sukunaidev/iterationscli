@@ -1,9 +1,11 @@
 'use client';
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
+import { UseTerminal } from "@/hooks/use-terminal";
 
 
 function Hero() {
+  const { changeTerminalActive } = UseTerminal();
   const phrases = ["Iterations", "Design At Your Fingertips", "By Programmers For Programmers", "Two Foots On My Feet"];
   const [displayText, setDisplayText] = useState<string>("");
   const [finishedWriting, setFinishedWriting] = useState<boolean>(true);
@@ -62,14 +64,24 @@ function Hero() {
       handleTyping(0, 0, false);
     }, typingSpeed);
 
+
     return () => {
       clearTimeout(timeout);
       clearInterval(cursorBlinkInterval)
     };
   }, [phrases.length]);
 
+  const scrollToFeatures = () => {
+    const features_component = document.getElementById("#features")
+    features_component?.scrollIntoView({
+      block: "nearest",
+      behavior: "smooth",
+    });
+  }
+
+
   return (
-    <div className="">
+    <div>
       <div className="bg-white text-black dark:bg-black dark:text-white h-screen flex items-center justify-center">
         <div className="flex items-center flex-col ">
           <div className="flex-col items-center">
@@ -81,8 +93,8 @@ function Hero() {
             </div>
           </div>
           <div className="flex gap-4 ">
-            <Button className="">Features</Button>
-            <Button className=" ">Get Started</Button></div>
+            <Button onClick={scrollToFeatures}>Features</Button>
+            <Button className=" " onClick={() => changeTerminalActive?.()}>Get Started</Button></div>
           <div className="text-gray-500 mt-10">
             Click Get Started or CTRL + Y to open the command window.
           </div>
@@ -91,4 +103,5 @@ function Hero() {
     </div>
   );
 }
-export default Hero
+
+export default Hero;

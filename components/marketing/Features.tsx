@@ -22,7 +22,7 @@ const features_content: FeatureItemProps[] = [
 function Features(){
   
   return (
-    <div className="bg-black text-white dark:bg-white dark:text-black py-24 border-y border-white/10 dark:border-black/10">
+    <div id="#features" className="bg-black text-white dark:bg-white dark:text-black py-24 border-y border-white/10 dark:border-black/10">
       <h2 className="text-3xl font-semibold mb-10 text-center">
         All of the control, with none of the friction
       </h2>

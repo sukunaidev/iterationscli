@@ -17,7 +17,7 @@ import { createContext, Dispatch, SetStateAction, useEffect, useState } from "re
 
 export const TerminalContext = createContext<TerminalContextValue>({
   history: '',
-  active: false
+  active: false,
 });
 
 function isTypingTarget(target: EventTarget | null) {
@@ -78,15 +78,22 @@ interface TerminalContextProviderProps {
 function TerminalContextProvider({ children }: TerminalContextProviderProps) {
   const [terminalState, setTerminalState] = useState<TerminalContextValue>({
     active: false,
-    history: ''
+    history: '',
   })
-
+  
+  const changeTerminalActive = (active?: boolean) => {
+    if(active)
+      setTerminalState((prev) => ({ ...prev, active }));
+    else
+      setTerminalState((prev) => ({ ...prev, active: !prev.active }))
+  }
 
 
   return (
     <TerminalContext.Provider value={{
       active: false,
-      history: ""
+      history: "",
+      changeTerminalActive
     }}>
       <TerminalHotkey setTerminalState={setTerminalState} />
       {terminalState.active && <TerminalWindow setTerminalState={setTerminalState} terminalState={terminalState} />}
