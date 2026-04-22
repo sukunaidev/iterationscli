@@ -1,3 +1,5 @@
+import { LoginHandler, LogoutHandler, RegisterHandler } from "./handlers/auth/handlers";
+
 export type CommandName = 
   | "help"
   | "auth"
@@ -24,21 +26,22 @@ export const Commands: Record<CommandName, Command> = {
       register: { 
         name: "register", 
         usage: "Used for creating an account",
-        args: [{name: "username", descriprion: "<value>" }, { name: "password", descriprion: "<password>"  }]
+        args: [{name: "username", descriprion: "<value>" }, { name: "password", descriprion: "<password>"  }],
+        handler: RegisterHandler
       },
       login: { 
         name: "login", 
         usage: "Used for logging into an account",
-        args: [{name: "username", descriprion: "<value>" }, { name: "password", descriprion: "<password>"  }]
+        args: [{name: "username", descriprion: "<value>" }, { name: "password", descriprion: "<password>"  }],
+        handler: LoginHandler
       },
       logout: { 
         name: "logout", 
         usage: "Used for logging out of an account",
+        handler: LogoutHandler
       },
     }
   },
-
-
   help: {
     name: "help",
     usage: "Lists the usage associated with a command"
