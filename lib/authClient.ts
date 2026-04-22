@@ -31,9 +31,18 @@ class AuthClient {
 
   async SignUpWithPassword({ username, password }: SignUpWithPasswordProps): Promise<{ error?: string }> {
     try{
-      // TODO: register the user up with a password
+      const res = await fetch("/api/auth/sign-up", {
+        method: "POST",
+        body: JSON.stringify({ username, password })
+      })
 
-      return {}
+      if(res.ok){
+        // may want to redirect to the dashboard, or call checksession to redirect us
+        return {}
+      }else{
+        const body = await res.json() as { message: string };
+        return { error: body.message }
+      }
     }catch(error){
       return { error: error as string }
     }
@@ -53,6 +62,12 @@ class AuthClient {
   async GetUser(): Promise<{ expires_at?: number, user?: User; error?: string }>{
     try{
       // TODO: call the backend and retrieve the users session data
+      const res = await fetch("/api/auth/authenticate", {
+        method: "GET",
+        credentials: "include"
+      })
+
+        
       return {};
     }catch(error){
       console.error("Error in authClient when trying to get user: ", error)
