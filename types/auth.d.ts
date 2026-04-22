@@ -1,5 +1,4 @@
 
-
 export interface AuthenticateContextValue {
   user: User | null;
   error: string | null;
@@ -10,5 +9,4 @@ export interface AuthenticateContextValue {
 
 export interface User {
   username: string;
-
 };

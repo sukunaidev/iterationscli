@@ -1,5 +1,4 @@
 "use client"
-import { Button } from "@/components/ui/button"
 
 import Hero from "@/components/marketing/Hero"
 import Time from "@/components/Time"

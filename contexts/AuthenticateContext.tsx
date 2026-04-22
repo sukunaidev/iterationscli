@@ -28,43 +28,48 @@ export function AuthenticateProvider({ children }: AuthenticateProviderProps) {
       if(!user && error){
         // we can more specifically set the auth state, based on the error (if the cookie expired, etc.)
         console.warn("Error: User is not authenticated: ", error)
+
         setAuth((prev) => ({ 
           ...prev,
           is_loading: false,
           expires_at: null,
           user: null,
           error: error,
-        }))
+        }));
+
       }
       if(user && expires_at){
+
         setAuth((prev) => ({
           ...prev,
           user: user ?? null,
           error: null,
           expires_at: expires_at ?? null,
           is_loading: false
-        }))
+        }));
+
       } else{
         console.error("User: Something went wrong authenticating user: User or expires_at was null", { user, expires_at })
+
         setAuth((prev) => ({ 
           ...prev,
           is_loading: false,
           expires_at: null,
           user: null,
           error: "Auth process broke, please try again later.",
-        }))
+        }));
       }
 
     } catch(error) {
       console.error("Failed to authenticate user: ", error)
-      
+
       setAuth((prev) => ({ 
         ...prev,
         is_loading: false,
         expires_at: null,
         user: null,
         error: "Error occured in authClient GetUser."
-      }))
+      }));
     }
   }
 
@@ -76,7 +81,5 @@ export function AuthenticateProvider({ children }: AuthenticateProviderProps) {
       {children}
     </AuthenticateContext.Provider>
   )
-
-
 };
 
