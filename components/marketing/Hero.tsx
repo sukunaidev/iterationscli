@@ -70,7 +70,7 @@ function Hero() {
 
   return (
     <div className="">
-      <div className="bg-black h-screen flex items-center justify-center">
+      <div className="bg-white text-black dark:bg-black dark:text-white h-screen flex items-center justify-center">
         <div className="flex items-center flex-col ">
           <div className="flex-col items-center">
             <div>

@@ -21,7 +21,8 @@ export default function Time(){
   }, [currentTime])
 
   return (
-    <div className=" bg-black flex justify-center">
+
+    <div className="bg-white text-black dark:bg-black dark:text-white flex items-center justify-center">
       <div className="flex-col ">
         <div className=" text-gray-400 mt-4 text-5xl mt-10">{currentTime}</div>
       </div>
