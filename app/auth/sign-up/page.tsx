@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useStateTracking } from "tldraw";
+import KamakoBoard from "@/components/shapes/KamakoBoard";
 
 
 function SignUpPage() {
@@ -38,6 +39,7 @@ function SignUpPage() {
 
   return (
     <div>
+      <KamakoBoard />
       <div>
         <div className="flex justify-center mt-90">
           <Card className="w-full max-w-sm">
@@ -66,6 +68,7 @@ function SignUpPage() {
                   value={password}
                   onChange={handleSignUpPassword}
                 ></Input>
+
               </CardHeader>
             </CardContent>
             <Input
