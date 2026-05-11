@@ -1,5 +1,8 @@
+
 export function RegisterHandler(){
   // do logic
+
+  window.location.assign("/auth/sign-up")
   console.log("creating a login dialog");
 }
 
@@ -10,6 +13,6 @@ export function LogoutHandler(){
 
 export function LoginHandler(){
   // do logic
-  console.log("loggin the the user out");
+  window.location.assign("/auth/sign-in")
 }
 

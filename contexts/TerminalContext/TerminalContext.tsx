@@ -137,7 +137,7 @@ function TerminalWindow(props: terminalWindowProps) {
                 return (
                   <CommandGroup heading={Commands[cmd as CommandName].name}>
                     {sub_cmds.map((sub_cmd)=> (
-                      <CommandItem key={sub_cmd.name} onClickCapture={sub_cmd?.handler}>
+                      <CommandItem key={sub_cmd.name} onSelect={sub_cmd.handler}>
                         {sub_cmd.name}
                         <span className="text-gray-500">{sub_cmd.usage}</span>
                       </CommandItem>
