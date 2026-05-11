@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button"
 
 import SignUpPage from "@/components/auth/SignUp"
 import Hero from "@/components/marketing/Hero"
+import Features from "@/components/marketing/Features"
 export default function Page() {
   return (
 
@@ -24,7 +25,7 @@ export default function Page() {
       <div>
 
         <div className="h-1/2 bg-white">
-          <Button className="mt-12">Features</Button>
+          <Features />
         </div>
 
       </div>
