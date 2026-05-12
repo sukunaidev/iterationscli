@@ -1,5 +1,5 @@
 'use client'
-import React from "react";
+import React, { DO_NOT_USE_OR_YOU_WILL_BE_FIRED_EXPERIMENTAL_MEDIA_SRC_TYPES } from "react";
 import { useState } from "react";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "../ui/resizable";
 import { CardHeader, Card, CardContent, CardDescription } from "../ui/card";
@@ -8,100 +8,94 @@ import { Checkbox } from "../ui/checkbox";
 import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
 
-interface Kamako {
-  ticketID: number;
-  ticketName: string;
+
+// Ticket Type, this is a ticket object
+//Column type, a column object that can have multiple tickets
+type Ticket = {
+  id: number
+  text: string
 }
+type Column = {
+  id: number
+  headerName: string
+  tickets: Ticket[]
+}
+
+
+
 function KamakoBoard() {
-  const [rowNextID, setRowNextID] = useState(2)
-  const [headerNextID, setheaderNextID] = useState(0)
-  const [headers, setHeaders] = useState([
-    { id: headerNextID }
-  ]);
-  const [rows, setRows] = useState<React.ReactNode[]>([]);
+  const [columns, setColumns] = useState<Column[]>([
+    {
+      id: 1,
+      headerName: "Nooduru",
+      tickets: [{ id: 1, text: "weee" }]
+    },
+    {
+      id: 2,
+      headerName: "NotNodur",
+      tickets: [{ id: 1, text: "weedfdfdfde" }, { id: 2, text: "weee" }]
 
+    }
+  ])
 
-  const addColumn = () => {
-    setHeaders((prev) => {
-      const newColumn = {
-        id: prev.length + 1
-      }
-      return [...prev, newColumn]
-    })
-    setheaderNextID((prev) => prev + 1)
+  const addTicketSubmit = (columnsID: number) => {
+    setColumns((prev) =>
+      prev.map((columns) => {
+        if (columns.id !== columnsID) return columns
 
+        const newTicket = {
+          id: Date.now(),
+          text: "Empty Ticket.."
+        }
+
+        return {
+          ...columns,
+          tickets: [...columns.tickets, newTicket]
+        }
+      })
+    )
   }
 
-  const addRow = () => {
-    const newRow = "newRow"
-    setRows((prev) => [...prev, newRow])
-  }
 
 
   return (
     /*Top Part of this div is an attempt to making a functing Kanban board using the table function */
     <div >
       <div>
-        <Card className="w-200 h-200 resize overflow-auto border flex flex-col p-2">
-          <table className="w-full table-fixed">
-            <thead>
-              <tr>
+        <Card className="w-200 h-200 resize overflow-auto border ">
+          <CardHeader>
+            <div className="flex gap-10" >
+              {columns.map((column) => (
+                <div key={column.id}>
+                  <Input value={column.headerName}></Input>
+                  <Separator className="mt-5" />
 
-                <th>
-                  <CardHeader className="flex justify-center gap-2" >
-                    <Input placeholder="name of this column"></Input>
-                    <CardDescription>{0}</CardDescription>
-                  </CardHeader>
-                  <Separator className="mt-5  flex flex-col gap-5" />
-
-                </th>
-                {headers.map((head) => (
-                  <th>
-                    <CardHeader className="flex justify-center ">
-                      <Input placeholder="name of this column"></Input>
-                    </CardHeader>
-                    <Separator className="mt-5 flex flex-col gap-5" />
-                    <CardDescription>{head.id}</CardDescription>
-                  </th>
-
-                ))}
-                <th>
-                  <Button onClick={addColumn}>+</Button>
-                </th>
-
-
-              </tr>
-            </thead>
-            <tbody>
-              <CardContent >
-                <td>
-                  <div className="flex flex-col gap-5">
-                    <div className="flex justify-center gap-2">
-                      <Checkbox className="w-8 h-8 "></Checkbox>
-                      <Input></Input>
-                      <Button >...</Button>
-                    </div>
-                    {rows.map((row) => (
-                      <td>
-                        <div className="flex justify-center gap-2">
+                  <div className="flex flex-col p-2">
+                    {column.tickets.map((ticket) =>
+                      <div key={ticket.id}>
+                        <div className=" flex justify-center gap-2 p-2">
                           <Checkbox className="w-8 h-8 "></Checkbox>
-                          <Input></Input>
-                          <Button onClick={addRow}>...</Button>
+                          <Input placeholder={ticket.text}></Input>
+                          <Button>...</Button>
                         </div>
-                      </td>
-                    ))}
 
-                    <Button onClick={addRow} className="mt-auto border p-2" variant={"outline"}>Create A New Ticket</Button>
+                      </div>
+
+                    )}
                   </div>
-                </td>
-              </CardContent>
-            </tbody>
-          </table>
+                  <div className="flex justify-center">
+                    <Button variant={"outline"} onClick={() => addTicketSubmit(column.id)}>Create New Ticket</Button>
+                  </div>
+                </div>
+              ))}
 
+
+            </div>
+
+
+          </CardHeader>
         </Card>
       </div>
-
-
 
       <Card className="w-72 h-72 resize overflow-auto border flex flex-col p-2" style={{
         border: "1px solid black",

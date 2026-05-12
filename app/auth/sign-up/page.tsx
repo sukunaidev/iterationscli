@@ -33,11 +33,11 @@ function SignUpPage() {
 
     try {
       const { error } = await authClient.SignUpWithPassword({ password, username });
-      if(error){
+      if (error) {
         console.log("Could not sign in:", error);
       }
       router.push("/dashboard");
-    } catch(error){
+    } catch (error) {
       console.log("Could not sign in: Serverside exception: ", error);
     }
   }
@@ -57,7 +57,7 @@ function SignUpPage() {
 
   return (
     <div>
-      {/* <KamakoBoard /> */}
+      {<KamakoBoard />}
       <div>
         <div className="flex justify-center mt-90">
           <Card className="w-full max-w-sm">
@@ -104,12 +104,12 @@ function SignUpPage() {
                 Write create terminal then press enter to sign into your terminal
               </CardDescription>
 
-            <Button
-              type="submit"
-              className="w-full"
-            >
-              Enter
-            </Button>
+              <Button
+                type="submit"
+                className="w-full"
+              >
+                Enter
+              </Button>
             </form>
             <Button variant="ghost"
               onClick={() => {
