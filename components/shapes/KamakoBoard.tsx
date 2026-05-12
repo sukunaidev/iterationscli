@@ -27,15 +27,10 @@ function KamakoBoard() {
   const [columns, setColumns] = useState<Column[]>([
     {
       id: 1,
-      headerName: "Nooduru",
-      tickets: [{ id: 1, text: "weee" }]
+      headerName: "Exmaple Column",
+      tickets: [{ id: 1, text: "give me ur money" }]
     },
-    {
-      id: 2,
-      headerName: "NotNodur",
-      tickets: [{ id: 1, text: "weedfdfdfde" }, { id: 2, text: "weee" }]
 
-    }
   ])
 
   const addTicketSubmit = (columnsID: number) => {
@@ -56,6 +51,20 @@ function KamakoBoard() {
     )
   }
 
+  const addNewcolumn = () => {
+    const newColumn = {
+      id: Date.now(),
+      headerName: "Empty Column..",
+      tickets: [{ id: Date.now(), text: "Empty Ticket.." }]
+    }
+    setColumns((prev) => {
+
+      return [...prev, newColumn]
+    })
+    console.log(columns)
+  }
+
+
 
 
   return (
@@ -67,32 +76,28 @@ function KamakoBoard() {
             <div className="flex gap-10" >
               {columns.map((column) => (
                 <div key={column.id}>
-                  <Input value={column.headerName}></Input>
+                  <Input placeholder={column.headerName}></Input>
                   <Separator className="mt-5" />
-
-                  <div className="flex flex-col p-2">
-                    {column.tickets.map((ticket) =>
-                      <div key={ticket.id}>
-                        <div className=" flex justify-center gap-2 p-2">
-                          <Checkbox className="w-8 h-8 "></Checkbox>
-                          <Input placeholder={ticket.text}></Input>
-                          <Button>...</Button>
+                  <CardContent>
+                    <div className="flex flex-col p-2">
+                      {column.tickets.map((ticket) =>
+                        <div key={ticket.id}>
+                          <div className=" flex justify-center gap-2 p-2">
+                            <Checkbox className="w-8 h-8 "></Checkbox>
+                            <Input placeholder={ticket.text}></Input>
+                            <Button>...</Button>
+                          </div>
                         </div>
-
-                      </div>
-
-                    )}
-                  </div>
+                      )}
+                    </div>
+                  </CardContent>
                   <div className="flex justify-center">
                     <Button variant={"outline"} onClick={() => addTicketSubmit(column.id)}>Create New Ticket</Button>
                   </div>
                 </div>
               ))}
-
-
+              <Button onClick={addNewcolumn}>+</Button>
             </div>
-
-
           </CardHeader>
         </Card>
       </div>
