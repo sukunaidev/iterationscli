@@ -5,7 +5,6 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/com
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import KamakoBoard from "@/components/shapes/KamakoBoard";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/authClient";
 
@@ -57,7 +56,6 @@ function SignUpPage() {
 
   return (
     <div>
-      {<KamakoBoard />}
       <div>
         <div className="flex justify-center mt-90">
           <Card className="w-full max-w-sm">

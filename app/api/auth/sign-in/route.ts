@@ -11,18 +11,18 @@ interface SignInParams {
 
 const key = new TextEncoder().encode(process.env.JWT_SECRET || '');
 
-export async function POST(req: NextRequest){
+export async function POST(req: NextRequest) {
 
   const supabase = createClient();
 
-  try{
+  try {
     const body = (await req.json()) as SignInParams;
     const { username, password } = body;
-    if(!(username && password)){
+    if (!(username && password)) {
 
       return NextResponse.json(
-        { message: "Missing username or password" }, 
-        { status: 400 } 
+        { message: "Missing username or password" },
+        { status: 400 }
       );
     }
     const { data, error } = await supabase
@@ -31,15 +31,15 @@ export async function POST(req: NextRequest){
       .eq("username", username)
       .single();
 
-    if(error || !data){
+    if (error || !data) {
       return NextResponse.json(
         { message: "User not found" },
         { status: 404 }
       )
-    } 
+    }
 
-    console.log("data", data, password, compareSync(password, data.password))
-    if (!compareSync(password, data.password) ){
+    // console.log("data", data, password, compareSync(password, data.password))
+    if (!compareSync(password, data.password)) {
       return NextResponse.json(
         { message: "Invalid password" },
         { status: 401 }
@@ -53,19 +53,19 @@ export async function POST(req: NextRequest){
     );
 
     const token = await new SignJWT({ user_id: data.user_id })
-                        .setProtectedHeader({ alg: "HS256" })
-                        .setIssuedAt()
-                        .setExpirationTime("6 Hours")
-                        .sign(key);
+      .setProtectedHeader({ alg: "HS256" })
+      .setIssuedAt()
+      .setExpirationTime("6 Hours")
+      .sign(key);
 
     res.cookies.set("auth-treat", token, { expires: 6 * 60 * 60 });
 
     return res;
-  }catch (error){
+  } catch (error) {
     console.error("Error in POST  sign-in route:", error)
     return NextResponse.json(
-      { message: "Internal server error: Could not sign in" }, 
-      { status: 500 } 
+      { message: "Internal server error: Could not sign in" },
+      { status: 500 }
     );
   }
 }

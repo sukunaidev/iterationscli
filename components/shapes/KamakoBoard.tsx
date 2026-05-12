@@ -7,13 +7,14 @@ import { Input } from "../ui/input";
 import { Checkbox } from "../ui/checkbox";
 import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
-
+import Column from "./Column";
 
 // Ticket Type, this is a ticket object
 //Column type, a column object that can have multiple tickets
 type Ticket = {
   id: number
   text: string
+  description?: string
 }
 type Column = {
   id: number
@@ -27,20 +28,43 @@ function KamakoBoard() {
   const [columns, setColumns] = useState<Column[]>([
     {
       id: 1,
-      headerName: "Exmaple Column",
-      tickets: [{ id: 1, text: "give me ur money" }]
+      headerName: "Example Column",
+      tickets: [{ id: 1, text: "Finish Homework" }]
     },
 
   ])
+
+
+  // use effect runs on component mountj
+  React.useEffect(() => {
+    // 1. Create an ansync function that will be called upon component mount
+    // 2. The request should query for the current board's data from the backend
+    // 3. Finally we should set the state of the component
+
+
+    const fetchKamakoData = async () => {
+      try {
+        const res = await fetch("/api/kamako", {
+          method: "GET",
+          credentials: "include"
+        })
+      } catch (error) {
+        console.error("Error when fetching kamako data:", error);
+        // clear the current kamako state
+      }
+    }
+
+    fetchKamakoData();
+  }, [])
 
   const addTicketSubmit = (columnsID: number) => {
     setColumns((prev) =>
       prev.map((columns) => {
         if (columns.id !== columnsID) return columns
 
-        const newTicket = {
+        const newTicket: Ticket = {
           id: Date.now(),
-          text: "Empty Ticket.."
+          text: "Empty Ticket..",
         }
 
         return {
@@ -51,7 +75,15 @@ function KamakoBoard() {
     )
   }
 
-  const addNewcolumn = () => {
+  const addNewcolumn = async () => {
+    try {
+
+    }
+    catch (error) {
+      console.log(error)
+      return
+    }
+
     const newColumn = {
       id: Date.now(),
       headerName: "Empty Column..",
@@ -101,42 +133,7 @@ function KamakoBoard() {
           </CardHeader>
         </Card>
       </div>
-
-      <Card className="w-72 h-72 resize overflow-auto border flex flex-col p-2" style={{
-        border: "1px solid black",
-        overflow: "auto",
-        resize: "both",
-        marginTop: "20px",
-      }}>
-        <CardHeader className="flex justify-center gap-2" >
-          <Input placeholder="name of this collum"></Input>
-          <Button>{"+"}</Button>
-        </CardHeader>
-        <CardContent>
-          <div className="flex flex-col gap-5">
-            <div className="flex justify-center gap-2">
-              <Checkbox className="w-8 h-8 "></Checkbox>
-              <Input>
-              </Input>
-              <Button>...</Button>
-            </div>
-            <div className="flex justify-center gap-2">
-              <Checkbox className="w-8 h-8 "></Checkbox>
-              <Input>
-              </Input>
-              <Button>...</Button>
-            </div>
-            <div className="flex justify-center gap-2">
-              <Checkbox className="w-8 h-8 "></Checkbox>
-              <Input>
-              </Input>
-              <Button>...</Button>
-            </div>
-          </div>
-        </CardContent>
-        <Button className="mt-auto border p-2" variant={"outline"}>Create A New Ticket</Button>
-        <CardDescription>Card Info: ID : blah Date Created: Blah</CardDescription>
-      </Card>
+      {/* <Column /> */}
     </div>
 
 
