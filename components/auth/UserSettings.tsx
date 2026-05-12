@@ -1,27 +1,11 @@
 'use client'
-import React from "react"
-import { useState } from "react"
+import { UseAuthenticate } from "@/hooks/use-authenticate"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "../ui/alert-dialog"
 import { Button } from "../ui/button"
 import { Input } from "../ui/input"
-import { createClient } from "@/lib/supabase/client"
 
-async function UserSettingsPage() {
-    const [username, setUsername] = useState('')
-
-
-
-    React.useEffect(() => {
-        async function loadUser() {
-            const supabase = createClient();
-            const { data: { user } } = await supabase.auth.getUser();
-            const userID = user?.id
-        }
-
-
-
-
-    })
+function UserSettingsPage() {
+    const { user } = UseAuthenticate();
 
     return (
         <div>
@@ -30,6 +14,7 @@ async function UserSettingsPage() {
                     <AlertDialogTrigger>
                         <Button>Temp Dialouge Open Button</Button>
                     </AlertDialogTrigger>
+          {user?.username}
                     <AlertDialogContent>
                         <AlertDialogHeader>
                             <AlertDialogTitle>Welcome to the Users Settings Page</AlertDialogTitle>

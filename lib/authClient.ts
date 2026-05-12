@@ -66,7 +66,7 @@ class AuthClient {
         method: "GET",
         credentials: "include"
       })
-
+      
         
       return {};
     }catch(error){

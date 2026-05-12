@@ -12,31 +12,33 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/client"
 
-export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-    const { id } = await params //This id value will contain the dyanamic value that the params has
+export async function GET(req: NextRequest) {
+  try {
     const supabase = createClient();
-    try {
-        const { data, error } = await supabase
-            .from("users")
-            .select("username")
-            .eq("id", id)
-            .single()
-        //Single means wanting one row back of information, this is just for now, password will be needed 
 
-        if (error || !data) {
-            return NextResponse.json(
-                { message: "User not found" },
-                { status: 401 }
-            )
-        }
-        return NextResponse.json(data);
+
+
+    const { data, error } = await supabase
+        .from("users")
+        .select("username")
+        //.eq("user_id", user_id)
+        .single()
+    //Single means wanting one row back of information, this is just for now, password will be needed 
+
+    if (error || !data) {
+      return NextResponse.json(
+        { message: "User not found" },
+        { status: 401 }
+      )
     }
-    catch (error) {
-        console.error("Error In GET update-user route:", error)
-        return NextResponse.json(
-            { message: "Error with retrival inside of the server" },
-            { status: 500 }
-        )
-    }
+    return NextResponse.json(data);
+  }
+  catch (error) {
+    console.error("Error In GET update-user route:", error)
+    return NextResponse.json(
+      { message: "Error with retrival inside of the server" },
+      { status: 500 }
+    )
+  }
 
 }

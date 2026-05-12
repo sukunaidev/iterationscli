@@ -3,7 +3,7 @@ import { AuthenticateContextValue } from "@/types/auth";
 import { createContext, ReactNode, useState } from "react";
 import { authClient } from "@/lib/authClient";
 
-const AuthenticateContext = createContext<AuthenticateContextValue>({
+export const AuthenticateContext = createContext<AuthenticateContextValue>({
   user: null,
   error: null,
   is_loading: false,
