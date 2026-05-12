@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import SignUpPage from "@/components/auth/SignUp"
 import Hero from "@/components/marketing/Hero"
 import Features from "@/components/marketing/Features"
+import UserSettingsPage from "@/components/auth/UserSettings"
 export default function Page() {
   return (
 
@@ -12,6 +13,7 @@ export default function Page() {
 
 
     <div className="">
+      <UserSettingsPage />
       <div className=" bg-black flex justify-center">
 
         <div className="flex-col ">
