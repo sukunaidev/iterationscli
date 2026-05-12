@@ -58,7 +58,7 @@ export async function POST(req: NextRequest) {
       .setExpirationTime("6 Hours")
       .sign(key);
 
-    res.cookies.set("auth-treat", token, { expires: 6 * 60 * 60 });
+    res.cookies.set("auth-treat", token, { httpOnly: true, maxAge: 6 * 60 * 60 });
 
     return res;
   } catch (error) {

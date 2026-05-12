@@ -64,7 +64,7 @@ export async function POST(req: NextRequest) {
       .sign(key);
 
     const res = NextResponse.json({ message: "Sign up success" })
-    res.cookies.set("auth-treat", token, { expires: 6 * 60 * 60 });
+    res.cookies.set("auth-treat", token, { httpOnly: true, maxAge: 6 * 60 * 60 });
 
     return res;
 

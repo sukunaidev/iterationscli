@@ -22,9 +22,10 @@ export async function GET(req: NextRequest) {
                           .select("username")
                           .eq("user_id", user_id)
                           .single()
-    
+
+    const username = user_result.data?.username;
     return NextResponse.json(
-      user_result.data,
+      { username },
       { status: 200 }
     );
 

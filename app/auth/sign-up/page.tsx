@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/authClient";
+import { UseAuthenticate } from "@/hooks/use-authenticate";
 
 
 function SignUpPage() {
@@ -18,6 +19,7 @@ function SignUpPage() {
   const [terminalText, setTerminalText] = useState("")
   //setTerminalText(text)
 
+  const { checkSession } = UseAuthenticate();
   const router = useRouter();
   const handleSubmit = async (
     e: React.FormEvent<HTMLFormElement>
@@ -35,6 +37,8 @@ function SignUpPage() {
       if (error) {
         console.log("Could not sign in:", error);
       }
+
+      await checkSession?.();
       router.push("/dashboard");
     } catch (error) {
       console.log("Could not sign in: Serverside exception: ", error);

@@ -59,7 +59,7 @@ class AuthClient {
     }
   }
 
-  async GetUser(): Promise<{ expires_at?: number, user?: User; error?: string }>{
+  async GetUser(): Promise<{ user?: User; error?: string }>{
     try{
       // TODO: call the backend and retrieve the users session data
       const res = await fetch("/api/auth/authenticate", {
@@ -67,8 +67,14 @@ class AuthClient {
         credentials: "include"
       })
       
+      if(res.ok){
+        const body = (await res.json()) as { username: string }
+        return { user: { username: body.username } };
+      }else{
+        const body = (await res.json()) as { message: string };
+        return { error: body.message }
+      }
         
-      return {};
     }catch(error){
       console.error("Error in authClient when trying to get user: ", error)
       return { error: error as string }

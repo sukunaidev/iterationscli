@@ -16,8 +16,6 @@ export async function GET(req: NextRequest) {
   try {
     const supabase = createClient();
 
-
-
     const { data, error } = await supabase
         .from("users")
         .select("username")
