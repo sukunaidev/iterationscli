@@ -12,24 +12,14 @@ import {
   AlertDialogTrigger 
 } from "../ui/alert-dialog"
 import { Input } from "../ui/input"
-import { useEffect, useState } from "react"
 
 function UserSettingsPage() {
-  const [mounted, setMounted] = useState(false);
+  const { user }  = UseAuthenticate();
 
-  const { user, checkSession } = UseAuthenticate();
 
-  useEffect(() => {
-    void checkSession?.();
-    console.log("got my user:", user)
-  }, [])
-
-  // useEffect(() => {
-  //   setMounted(true)
-  // }, [])
-
-  // if (!mounted) return null
-
+  const updateUser = async () => {
+    
+  }
 
 
   return (
@@ -44,18 +34,17 @@ function UserSettingsPage() {
             <AlertDialogHeader>
               <AlertDialogTitle>Welcome to the Users Settings Page{user?.username}</AlertDialogTitle>
               <AlertDialogDescription>
-                  Username
-                  <Input placeholder={user?.username} />
-                  Password
-                  <Input />
+                Username
+                <Input placeholder={user?.username} />
+                Password
+                <Input />
               </AlertDialogDescription>
             </AlertDialogHeader>
 
             <AlertDialogFooter>
-                <AlertDialogCancel>Exit</AlertDialogCancel>
-                <AlertDialogAction>Save</AlertDialogAction>
+              <AlertDialogCancel>Exit</AlertDialogCancel>
+              <AlertDialogAction onClick={updateUser}>Save</AlertDialogAction>
             </AlertDialogFooter>
-
           </AlertDialogContent>
 
         </AlertDialog>

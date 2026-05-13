@@ -1,6 +1,6 @@
 'use client';
 import { AuthenticateContextValue } from "@/types/auth";
-import { createContext, ReactNode, useState } from "react";
+import { createContext, ReactNode, useCallback, useEffect, useState } from "react";
 import { authClient } from "@/lib/authClient";
 
 export const AuthenticateContext = createContext<AuthenticateContextValue>({
@@ -17,14 +17,21 @@ export function AuthenticateProvider({ children }: AuthenticateProviderProps) {
   const [auth, setAuth] = useState<AuthenticateContextValue>({
     user: null,
     error: null,
-    is_loading: false,
+    is_loading: true,
   })
-    
+  useEffect(() => {
+    void checkSession();
+  }, []);
   // the check session function is the behavior that can be used globally across the application, to verify if a user is authenticated whenever needed. 
   // In addition it refreshes user object data with the latest data, otherwise it will clear the USER object and set any error it runs into.
-  const checkSession = async () => {
+  const checkSession = useCallback(async () => {
     try{
       // using the authClient class we call the GetUser function to get user data
+      
+      setAuth((prev) => ({
+        ...prev,
+        is_loading: true
+      }))
       const { user, error } = await authClient.GetUser();
 
       // if we do NOT receive a user object and get an ERROR object, we must clear the authentication context. (something in the auth process/serverside has failed)
@@ -75,7 +82,7 @@ export function AuthenticateProvider({ children }: AuthenticateProviderProps) {
         error: "Error occured in authClient GetUser."
       }));
     }
-  }
+  }, [])
 
   return (
     <AuthenticateContext.Provider value={{
