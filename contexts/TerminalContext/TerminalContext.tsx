@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/command"
 import { TerminalContextValue } from "@/types/terminal";
 import { Commands, CommandName } from "./commands"
+import { useRouter } from "next/navigation";
 
 import { createContext, Dispatch, SetStateAction, useEffect, useState } from "react"
 
@@ -80,9 +81,9 @@ function TerminalContextProvider({ children }: TerminalContextProviderProps) {
     active: false,
     history: '',
   })
-  
+
   const changeTerminalActive = (active?: boolean) => {
-    if(active)
+    if (active)
       setTerminalState((prev) => ({ ...prev, active }));
     else
       setTerminalState((prev) => ({ ...prev, active: !prev.active }))
@@ -110,7 +111,9 @@ interface terminalWindowProps {
 
 function TerminalWindow(props: terminalWindowProps) {
   const [command, setCommand] = useState("")
+  const [userSettingsPageOpen, setUserSettingsPageOpen] = useState<boolean>(false);
 
+  const router = useRouter();
 
   return (
     <div >
@@ -129,28 +132,28 @@ function TerminalWindow(props: terminalWindowProps) {
             } />
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
-            {Object.keys(Commands).map((cmd) =>{
+            {Object.keys(Commands).map((cmd) => {
               const command = Commands[cmd as CommandName];
               const sub_cmds = Object.values(command.sub_commands || {})
               const has_subs = sub_cmds.length !== 0
-              if (has_subs){
+              if (has_subs) {
                 return (
                   <CommandGroup heading={Commands[cmd as CommandName].name}>
-                    {sub_cmds.map((sub_cmd)=> (
-                      <CommandItem key={sub_cmd.name} onSelect={sub_cmd.handler}>
+                    {sub_cmds.map((sub_cmd) => (
+                      <CommandItem key={sub_cmd.name} onSelect={() => sub_cmd.handler?.({ router })}>
                         {sub_cmd.name}
                         <span className="text-gray-500">{sub_cmd.usage}</span>
                       </CommandItem>
-                    ) )}
+                    ))}
                   </CommandGroup>
                 )
-              }else{
+              } else {
                 return (
                   <CommandItem>{command.name}<span className="text-gray-500">{command.usage}</span></CommandItem>
                 )
               }
             })}
-            
+
           </CommandList>
         </Command>
       </CommandDialog >

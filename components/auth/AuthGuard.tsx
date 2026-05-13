@@ -5,7 +5,7 @@ import React from "react";
 import { useRouter } from "next/navigation";
 
 import {
-  UseAuthenticate
+  useAuthenticate
 } from "@/hooks/use-authenticate";
 
 interface AuthGuardProps {
@@ -14,7 +14,7 @@ interface AuthGuardProps {
 
 export default function AuthGuard({ children }: AuthGuardProps) {
   const router = useRouter();
-  const { user, error, is_loading } = UseAuthenticate(); // remove checkSession
+  const { user, error, is_loading } = useAuthenticate(); // remove checkSession
 
   React.useEffect(() => {
     if (is_loading) return;

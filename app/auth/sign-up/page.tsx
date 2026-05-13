@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/authClient";
-import { UseAuthenticate } from "@/hooks/use-authenticate";
+import { useAuthenticate } from "@/hooks/use-authenticate";
 
 
 function SignUpPage() {
@@ -19,7 +19,7 @@ function SignUpPage() {
   const [terminalText, setTerminalText] = useState("")
   //setTerminalText(text)
 
-  const { checkSession } = UseAuthenticate();
+  const { checkSession } = useAuthenticate();
   const router = useRouter();
   const handleSubmit = async (
     e: React.FormEvent<HTMLFormElement>

@@ -1,33 +1,38 @@
 'use client'
-import { UseAuthenticate } from "@/hooks/use-authenticate"
-import { 
-  AlertDialog, 
-  AlertDialogAction, 
-  AlertDialogCancel, 
-  AlertDialogContent, 
-  AlertDialogDescription, 
-  AlertDialogFooter, 
-  AlertDialogHeader, 
-  AlertDialogTitle, 
-  AlertDialogTrigger 
+import { useAuthenticate } from "@/hooks/use-authenticate"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger
 } from "../ui/alert-dialog"
 import { Input } from "../ui/input"
+import { useState } from "react";
 
-function UserSettingsPage() {
-  const { user }  = UseAuthenticate();
 
+type Props = {
+  open: boolean
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>
+}
+function UserSettingsPage({ open, setOpen }: Props) {
+  const { user } = useAuthenticate();
+  // const [open, setOpen] = useState(false)
 
   const updateUser = async () => {
-    
+
   }
 
 
   return (
     <div>
       <div>
-        <AlertDialog>
-          <AlertDialogTrigger>
-            Temp Dialouge Open Button
+        <AlertDialog open={open} onOpenChange={setOpen}>
+          <AlertDialogTrigger >
           </AlertDialogTrigger>
 
           <AlertDialogContent>

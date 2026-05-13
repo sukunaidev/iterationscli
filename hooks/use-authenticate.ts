@@ -3,9 +3,9 @@ import { AuthenticateContext } from "@/contexts/AuthenticateContext"
 import { useContext } from "react";
 
 
-export function UseAuthenticate(): AuthenticateContextValue {
+export function useAuthenticate(): AuthenticateContextValue {
   const ctx = useContext(AuthenticateContext);
-  if(!ctx){
+  if (!ctx) {
     console.error("Error: UseAuthenticate should be used within a Authenticate Provider");
   }
   return ctx;
