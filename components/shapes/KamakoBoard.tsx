@@ -114,7 +114,7 @@ function KamakoBoard() {
                     <div className="flex flex-col p-2">
                       {column.tickets.map((ticket) =>
                         <div key={ticket.id}>
-                          <div className=" flex justify-center gap-2 p-2">
+                          <div className=" flex justify-center gap-2 p-2 w-80 h-15">
                             <Checkbox className="w-8 h-8 "></Checkbox>
                             <Input placeholder={ticket.text}></Input>
                             <Button>...</Button>
@@ -124,7 +124,9 @@ function KamakoBoard() {
                     </div>
                   </CardContent>
                   <div className="flex justify-center">
-                    <Button variant={"outline"} onClick={() => addTicketSubmit(column.id)}>Create New Ticket</Button>
+                    <Button variant={"outline"} onClick={() => addTicketSubmit(column.id)}
+
+                    >Create New Ticket</Button>
                   </div>
                 </div>
               ))}
