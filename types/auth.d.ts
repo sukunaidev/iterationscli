@@ -9,3 +9,7 @@ export interface AuthenticateContextValue {
 export interface User {
   username: string;
 };
+
+export interface AuthPayload {
+  user_id: number,
+}

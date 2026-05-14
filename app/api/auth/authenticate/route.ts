@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/client"
 import { jwtVerify } from "jose"
+import { decode_token } from "@/lib/crypt";
 
 const key = new TextEncoder().encode(process.env.JWT_SECRET || '');
 
@@ -8,14 +9,7 @@ export async function GET(req: NextRequest) {
   try{
     const supabase = createClient();
 
-    // Get the cookie from the req
-    const cookie_store = req.cookies;
-    const token = cookie_store.get("auth-treat")?.value as string;
-
-    console.log("got my token ", token);
-    const decoded = await jwtVerify(token, key);
-
-    const { user_id } = decoded.payload;
+    const { user_id } = await decode_token(req);
 
     const user_result = await supabase
                           .from("users")
