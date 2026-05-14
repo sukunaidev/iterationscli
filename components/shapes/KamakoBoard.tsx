@@ -26,6 +26,9 @@ type Column = {
 
 function KamakoBoard() {
   const [columns, setColumns] = useState<Column[]>([])
+  const [ticketText, setTicketText] = useState('')
+
+
   // use effect runs on component mountj
   React.useEffect(() => {
     // 1. Create an ansync function that will be called upon component mount
@@ -111,6 +114,30 @@ function KamakoBoard() {
 
 
 
+  const updateTicket = async (columnID: number, ticketID: number, ticketText: string) => {
+    try {
+
+      const res = await fetch("/api/kamako/tickets", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json", },
+        body: JSON.stringify({
+          column_id: columnID,
+          ticket_id: ticketID,
+          text: ticketText
+        })
+      })
+    }
+    catch (error) {
+      console.error("Error updating ticket information", error)
+    }
+  }
+
+  let handleTicketChange = (e: React.ChangeEvent<HTMLInputElement>, ticketID: number, columnID: number) => {
+    setTicketText(e.target.value)
+    updateTicket(columnID, ticketID, ticketText)
+
+  }
+
 
   return (
     /*Top Part of this div is an attempt to making a functing Kanban board using the table function */
@@ -129,7 +156,17 @@ function KamakoBoard() {
                         <div key={ticket.id}>
                           <div className=" flex justify-center gap-2 p-2 w-80 h-15">
                             <Checkbox className="w-8 h-8 "></Checkbox>
-                            <Input placeholder={ticket.text}></Input>
+                            <Input
+                              placeholder={ticket.text}
+                              value={ticketText}
+                              onChange={(e) => setTicketText(e.target.value)}
+                              onKeyDown={(e) => {
+                                if (e.key === "Enter") {
+                                  updateTicket(column.id, ticket.id, ticketText)
+                                }
+                              }}
+
+                            ></Input>
                             <Button>...</Button>
                           </div>
                         </div>
