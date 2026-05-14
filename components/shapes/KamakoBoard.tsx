@@ -25,16 +25,7 @@ type Column = {
 
 
 function KamakoBoard() {
-  const [columns, setColumns] = useState<Column[]>([
-    {
-      id: 1,
-      headerName: "Example Column",
-      tickets: [{ id: 1, text: "Finish Homework" }]
-    },
-
-  ])
-
-
+  const [columns, setColumns] = useState<Column[]>([])
   // use effect runs on component mountj
   React.useEffect(() => {
     // 1. Create an ansync function that will be called upon component mount
@@ -48,6 +39,28 @@ function KamakoBoard() {
           method: "GET",
           credentials: "include"
         })
+
+        if (!res.ok) {
+          console.log("Failed to fetch:")
+        }
+        const result = await res.json();
+        const board = result.data;
+
+        console.log(result);
+        console.log(board)
+        console.log(board?.columns)
+
+        const formattedColumns = board.columns.map((col: any) => ({
+          id: col.column_id,
+          headerName: col.column_header ?? "Null",
+          tickets: (col.tickets ?? []).map((ticket: any) => ({
+            id: ticket.ticket_id,
+            text: ticket.ticket_header,
+          }))
+        }))
+
+        setColumns(formattedColumns)
+
       } catch (error) {
         console.error("Error when fetching kamako data:", error);
         // clear the current kamako state

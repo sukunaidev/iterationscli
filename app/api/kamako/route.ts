@@ -1,6 +1,7 @@
 import { decode_token } from "@/lib/crypt";
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/client";
+import { col } from "motion/react-client";
 
 // CRUD
 // POST IS CREATE
@@ -69,6 +70,7 @@ export async function GET(req: NextRequest) {
         ),
       })),
     }
+    console.log(columns, tickets, structuredBoard)
 
 
     return NextResponse.json({
