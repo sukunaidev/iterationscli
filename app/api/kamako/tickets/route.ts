@@ -1,11 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/client";
+import { s } from "motion/react-m";
 
 export async function PUT(req: NextRequest) {
     try {
 
         const { column_id, ticket_id, text } = await req.json();
         const supabase = createClient();
+
+
 
         if (!column_id || !ticket_id || !text) {
             console.log(column_id, ticket_id, text)
@@ -14,6 +17,36 @@ export async function PUT(req: NextRequest) {
                 { status: 400 }
             )
         }
+        //check if the ticket num exist inside of the db
+        const { data: ticketData, error: ticketError } = await supabase
+            .from("tickets")
+            .select("*")
+            .eq("ticket_id", ticket_id)
+            .maybeSingle()
+
+        if (ticketError) {
+            console.log("Error:", ticketError)
+        }
+        if (ticketData) {
+            console.log("Ticket Exist")
+        }
+        else {
+            console.log("Ticket doesnt exist, creating new one")
+            const { data: createdTicket, error } = await supabase
+                .from("tickets")
+                .insert({ column_id: column_id, ticket_header: text })
+                .select()
+                .single()
+            if (error) {
+                console.error("Error creating ticket:", error)
+            }
+
+            console.log("Created ticket", createdTicket)
+
+        }
+
+
+
         const { error } = await supabase
             .from("tickets")
             .update({ ticket_header: text })

@@ -26,7 +26,7 @@ type Column = {
 
 function KamakoBoard() {
   const [columns, setColumns] = useState<Column[]>([])
-  const [ticketText, setTicketText] = useState('')
+
 
 
   // use effect runs on component mountj
@@ -132,11 +132,7 @@ function KamakoBoard() {
     }
   }
 
-  let handleTicketChange = (e: React.ChangeEvent<HTMLInputElement>, ticketID: number, columnID: number) => {
-    setTicketText(e.target.value)
-    updateTicket(columnID, ticketID, ticketText)
 
-  }
 
 
   return (
@@ -158,11 +154,17 @@ function KamakoBoard() {
                             <Checkbox className="w-8 h-8 "></Checkbox>
                             <Input
                               placeholder={ticket.text}
-                              value={ticketText}
-                              onChange={(e) => setTicketText(e.target.value)}
+                              value={ticket.text}
+                              onChange={(e) =>
+                                setColumns(prev => prev.map(col => col.id !== column.id ? col : {
+                                  ...col,
+                                  tickets: col.tickets.map(t => t.id === ticket.id ? { ...t, text: e.target.value } : t)
+                                }))
+                              }
                               onKeyDown={(e) => {
                                 if (e.key === "Enter") {
-                                  updateTicket(column.id, ticket.id, ticketText)
+                                  updateTicket(column.id, ticket.id, (e.target as HTMLInputElement).value)
+                                  console.log(column.id, ticket.id)
                                 }
                               }}
 
