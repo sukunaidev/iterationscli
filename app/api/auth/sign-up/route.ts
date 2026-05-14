@@ -3,6 +3,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/client";
 import { hashSync } from "bcrypt"
 import { SignJWT } from "jose";
+import { col, sup } from "motion/react-client";
+import { error } from "node:console";
 
 interface SignUpWithPassowrdProps {
   username: string;
@@ -42,6 +44,8 @@ export async function POST(req: NextRequest) {
       .from("boards")
       .insert({ user_id: user_id, name: "starterBoard" })
       .select("board_id")
+      .single()
+
 
     // if (board_result.error) {
     //   console.log("Could not create board:", board_result.error);
@@ -52,8 +56,39 @@ export async function POST(req: NextRequest) {
     //   );
     // }
 
-    const board_id = board_result.data;
+    const board_id = board_result.data?.board_id;
     console.log("board_id:", board_id)
+
+    const column_result = await supabase
+      .schema("iterations")
+      .from("columns")
+      .insert({ board_id: board_id, column_header: "To Do" })
+      .select("column_id")
+      .single()
+
+
+    if (column_result.error) {
+      console.error("couldnt create a column", column_result.error)
+      return NextResponse.json(
+        { message: " Couldnt create a column" },
+        { status: 500 }
+      )
+    }
+    const column_id = column_result?.data?.column_id
+
+
+    const ticket_result = await supabase
+      .schema("iterations")
+      .from("tickets")
+      .insert({ column_id: column_id, ticket_header: "Finish Wesbite" })
+
+    if (ticket_result.error) {
+      console.error("couldnt create a ticket:", ticket_result.error)
+      return NextResponse.json(
+        { message: " Couldnt create a ticket" },
+        { status: 500 }
+      )
+    }
 
 
 
@@ -73,4 +108,4 @@ export async function POST(req: NextRequest) {
     console.log("Error signing user up:", error)
     return NextResponse.json({ message: "Could not sign user up" }, { status: 500 })
   }
-}
+};
