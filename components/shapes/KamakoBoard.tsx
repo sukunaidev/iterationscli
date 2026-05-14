@@ -8,6 +8,18 @@ import { Checkbox } from "../ui/checkbox";
 import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
 import Column from "./Column";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import { Textarea } from "../ui/textarea";
 
 // Ticket Type, this is a ticket object
 //Column type, a column object that can have multiple tickets
@@ -59,6 +71,7 @@ function KamakoBoard() {
           tickets: (col.tickets ?? []).map((ticket: any) => ({
             id: ticket.ticket_id,
             text: ticket.ticket_header,
+            description: ticket.ticket_description ?? "",
           }))
         }))
 
@@ -81,6 +94,7 @@ function KamakoBoard() {
         const newTicket: Ticket = {
           id: Date.now(),
           text: "Empty Ticket..",
+          description: ""
         }
 
         return {
@@ -114,7 +128,7 @@ function KamakoBoard() {
 
 
 
-  const updateTicket = async (columnID: number, ticketID: number, ticketText: string) => {
+  const updateTicket = async (columnID: number, ticketID: number, ticketText: string, descriptionText: string) => {
     try {
 
       const res = await fetch("/api/kamako/tickets", {
@@ -123,13 +137,24 @@ function KamakoBoard() {
         body: JSON.stringify({
           column_id: columnID,
           ticket_id: ticketID,
-          text: ticketText
+          text: ticketText,
+          descText: descriptionText
         })
       })
     }
     catch (error) {
       console.error("Error updating ticket information", error)
     }
+  }
+
+  const updateColumn = async (ColumnID: number, column_header: string) => {
+    try {
+      const res = await fetch("/api/kamako/columns")
+    }
+    catch (error) {
+      console.error("Error with updating columns", error)
+    }
+
   }
 
 
@@ -163,13 +188,44 @@ function KamakoBoard() {
                               }
                               onKeyDown={(e) => {
                                 if (e.key === "Enter") {
-                                  updateTicket(column.id, ticket.id, (e.target as HTMLInputElement).value)
+                                  updateTicket(column.id, ticket.id, (e.target as HTMLInputElement).value, ticket.description ?? "")
                                   console.log(column.id, ticket.id)
                                 }
                               }}
 
                             ></Input>
-                            <Button>...</Button>
+                            <AlertDialog>
+                              <AlertDialogTrigger asChild>
+                                <Button>...</Button>
+                              </AlertDialogTrigger>
+                              <AlertDialogContent>
+                                <AlertDialogHeader>
+                                  <AlertDialogTitle>{ticket.text}</AlertDialogTitle>
+                                  <AlertDialogDescription>Ticket Description:</AlertDialogDescription>
+                                  <Textarea
+                                    value={ticket.description}
+                                    onChange={(e) => setColumns(prev => prev.map(col =>
+                                      col.id !== column.id ? col : {
+                                        ...col,
+                                        tickets: col.tickets.map(t => t.id === ticket.id ? {
+                                          ...t, description: e.target.value
+                                        } : t)
+                                      }))}
+                                  />
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                  <AlertDialogAction
+                                    onClick={() =>
+                                      updateTicket(column.id, ticket.id, ticket.text, ticket.description ?? "")
+                                    }
+                                  >Save Ticket</AlertDialogAction>
+                                  <AlertDialogAction variant={"destructive"}>Delete Ticket</AlertDialogAction>
+                                </AlertDialogFooter>
+                              </AlertDialogContent>
+                            </AlertDialog>
+
+
+
                           </div>
                         </div>
                       )}
@@ -185,10 +241,10 @@ function KamakoBoard() {
               <Button onClick={addNewcolumn}>+</Button>
             </div>
           </CardHeader>
-        </Card>
-      </div>
+        </Card >
+      </div >
       {/* <Column /> */}
-    </div>
+    </div >
 
 
 

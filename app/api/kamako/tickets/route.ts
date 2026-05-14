@@ -5,7 +5,7 @@ import { s } from "motion/react-m";
 export async function PUT(req: NextRequest) {
     try {
 
-        const { column_id, ticket_id, text } = await req.json();
+        const { column_id, ticket_id, text, descText } = await req.json();
         const supabase = createClient();
 
 
@@ -16,6 +16,10 @@ export async function PUT(req: NextRequest) {
                 { message: "Missing Fields" },
                 { status: 400 }
             )
+        }
+        if (!descText) {
+            console.log(column_id, ticket_id, text)
+            descText === ""
         }
         //check if the ticket num exist inside of the db
         const { data: ticketData, error: ticketError } = await supabase
@@ -34,7 +38,7 @@ export async function PUT(req: NextRequest) {
             console.log("Ticket doesnt exist, creating new one")
             const { data: createdTicket, error } = await supabase
                 .from("tickets")
-                .insert({ column_id: column_id, ticket_header: text })
+                .insert({ column_id: column_id, ticket_id: ticket_id, ticket_header: text })
                 .select()
                 .single()
             if (error) {
@@ -42,14 +46,11 @@ export async function PUT(req: NextRequest) {
             }
 
             console.log("Created ticket", createdTicket)
-
         }
-
-
 
         const { error } = await supabase
             .from("tickets")
-            .update({ ticket_header: text })
+            .update({ ticket_header: text, ticket_description: descText })
             .eq("ticket_id", ticket_id)
             .eq("column_id", column_id)
 
