@@ -30,6 +30,7 @@ type Ticket = {
 }
 type Column = {
   id: number
+  boardId: number
   headerName: string
   tickets: Ticket[]
 }
@@ -38,7 +39,7 @@ type Column = {
 
 function KamakoBoard() {
   const [columns, setColumns] = useState<Column[]>([])
-
+  const [boardId, setBoardId] = useState<number | undefined>()
 
 
   // use effect runs on component mountj
@@ -67,6 +68,7 @@ function KamakoBoard() {
 
         const formattedColumns = board.columns.map((col: any) => ({
           id: col.column_id,
+          boardId: col.board_id,
           headerName: col.column_header ?? "Null",
           tickets: (col.tickets ?? []).map((ticket: any) => ({
             id: ticket.ticket_id,
@@ -74,7 +76,7 @@ function KamakoBoard() {
             description: ticket.ticket_description ?? "",
           }))
         }))
-
+        setBoardId(board.board_id)
         setColumns(formattedColumns)
 
       } catch (error) {
@@ -113,9 +115,11 @@ function KamakoBoard() {
       console.log(error)
       return
     }
+    if (!boardId) return
 
-    const newColumn = {
+    const newColumn: Column = {
       id: Date.now(),
+      boardId: boardId,
       headerName: "Empty Column..",
       tickets: [{ id: Date.now(), text: "Empty Ticket.." }]
     }
@@ -147,9 +151,20 @@ function KamakoBoard() {
     }
   }
 
-  const updateColumn = async (ColumnID: number, column_header: string) => {
+  const updateColumn = async (board_id: number, column_id: number, column_header: string) => {
     try {
-      const res = await fetch("/api/kamako/columns")
+      const res = await fetch("/api/kamako/columns", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          board_id: board_id,
+          column_id: column_id,
+          column_header: column_header
+        })
+      }
+      )
     }
     catch (error) {
       console.error("Error with updating columns", error)
@@ -169,7 +184,22 @@ function KamakoBoard() {
             <div className="flex gap-10" >
               {columns.map((column) => (
                 <div key={column.id}>
-                  <Input placeholder={column.headerName}></Input>
+                  <Input
+                    placeholder={column.headerName}
+                    value={column.headerName}
+                    onChange={(e) => {
+                      setColumns(prev => prev.map(col => //SetColumns updates the columns state with the prev/current state, then it will map/loopp through all the columns              
+                        col.id === column.id ? //it will check if the current col object id is = the column.id we are editing
+                          { ...col, headerName: e.target.value } : col //this is the iftrue:iffalse. if the condition above is true thenthe column value will be e.targe.value else it will stay the same
+                      ))
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        updateColumn(column.boardId, column.id, (e.target as HTMLInputElement).value)
+                      }
+                    }}
+
+                  ></Input>
                   <Separator className="mt-5" />
                   <CardContent>
                     <div className="flex flex-col p-2">
@@ -181,10 +211,14 @@ function KamakoBoard() {
                               placeholder={ticket.text}
                               value={ticket.text}
                               onChange={(e) =>
-                                setColumns(prev => prev.map(col => col.id !== column.id ? col : {
-                                  ...col,
-                                  tickets: col.tickets.map(t => t.id === ticket.id ? { ...t, text: e.target.value } : t)
-                                }))
+                                setColumns(prev => prev.map(col =>
+                                  col.id !== column.id ?
+                                    col : {
+                                      ...col,
+                                      tickets: col.tickets.map(t =>
+                                        t.id === ticket.id ?
+                                          { ...t, text: e.target.value } : t)
+                                    }))
                               }
                               onKeyDown={(e) => {
                                 if (e.key === "Enter") {
@@ -204,14 +238,15 @@ function KamakoBoard() {
                                   <AlertDialogDescription>Ticket Description:</AlertDialogDescription>
                                   <Textarea
                                     value={ticket.description}
-                                    onChange={(e) => setColumns(prev => prev.map(col =>
-                                      col.id !== column.id ? col : {
-                                        ...col,
-                                        tickets: col.tickets.map(t => t.id === ticket.id ? {
-                                          ...t, description: e.target.value
-                                        } : t)
-                                      }))}
-                                  />
+                                    onChange={(e) =>
+                                      setColumns(prev => prev.map(col =>
+                                        col.id !== column.id ? col : {
+                                          ...col,
+                                          tickets: col.tickets.map(t =>
+                                            t.id === ticket.id ? {
+                                              ...t, description: e.target.value
+                                            } : t)
+                                        }))} />
                                 </AlertDialogHeader>
                                 <AlertDialogFooter>
                                   <AlertDialogAction
