@@ -224,13 +224,11 @@ function KamakoBoard() {
 
 
 
-
-
   return (
     /*Top Part of this div is an attempt to making a functing Kanban board using the table function */
     <div >
       <div>
-        <Card className="w-200 h-200 resize overflow-auto border ">
+        <Card className="overflow-auto border ">
           <CardHeader>
             <div className="flex gap-10" >
               {columns.map((column) => (
@@ -318,9 +316,6 @@ function KamakoBoard() {
                                 </AlertDialogFooter>
                               </AlertDialogContent>
                             </AlertDialog>
-
-
-
                           </div>
                         </div>
                       )}
