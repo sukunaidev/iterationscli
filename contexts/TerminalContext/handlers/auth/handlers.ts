@@ -1,23 +1,27 @@
 import React from "react";
+import { authClient } from "@/lib/authClient";
+import { CommandHandler } from "../../commands";
 
-export function RegisterHandler() {
+export const RegisterHandler: CommandHandler = ({ setTerminalState, router, terminalState }) => {
   // do logic
-
-  window.location.assign("/auth/sign-up")
+  router?.push("/auth/sign-up")
   console.log("creating a login dialog");
 }
 
-export function LogoutHandler() {
+export const LogoutHandler: CommandHandler = ({ setTerminalState, router, terminalState }) => {
   // do logic
-  console.log("logging the user out");
+  authClient.SignOut();
 }
 
-export function LoginHandler() {
+export const LoginHandler: CommandHandler = ({ setTerminalState, router, terminalState }) => {
   // do logic
-  window.location.assign("/auth/sign-in")
+  router?.push("/auth/sign-in")
 }
 
-export function SettingHandler() {
-
+export const SettingHandler: CommandHandler = ({ setTerminalState, router, terminalState }) => {
+  setTerminalState((prev) => ({
+    ...prev,
+    showUserSettings: !prev.showUserSettings
+  }) )
 }
 

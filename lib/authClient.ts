@@ -41,6 +41,7 @@ class AuthClient {
         return {}
       }else{
         const body = await res.json() as { message: string };
+        console.log("Could not sign user in:", body.message)
         return { error: body.message }
       }
     }catch(error){
