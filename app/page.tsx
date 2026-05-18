@@ -3,6 +3,7 @@
 import Hero from "@/components/marketing/Hero"
 import Features from "@/components/marketing/Features"
 import Time from "@/components/Time"
+import Footer from "@/components/marketing/Footer"
 export default function Page() {
   return (
     <div className="">
@@ -12,11 +13,10 @@ export default function Page() {
         </div>
       </div>
       <Hero />
-      <div>
         <div className="h-1/2 bg-white">
           <Features />
         </div>
-      </div>
+      <Footer />
     </div >
   )
 }

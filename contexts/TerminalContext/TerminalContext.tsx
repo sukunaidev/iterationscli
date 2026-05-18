@@ -7,17 +7,18 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-  CommandSeparator,
-  CommandShortcut,
 } from "@/components/ui/command"
 import { TerminalContextValue } from "@/types/terminal";
-import { Commands, CommandName } from "./commands"
+import { Commands, CommandName, Command as CommandType } from "./commands"
+import UserSettings from "components/auth/UserSettings"
 import { useRouter } from "next/navigation";
 
 import { createContext, Dispatch, SetStateAction, useEffect, useState } from "react"
+import { useAuthenticate } from "@/hooks/use-authenticate";
 
 export const TerminalContext = createContext<TerminalContextValue>({
   history: '',
+  showUserSettings: false,
   active: false,
 });
 
@@ -80,6 +81,7 @@ function TerminalContextProvider({ children }: TerminalContextProviderProps) {
   const [terminalState, setTerminalState] = useState<TerminalContextValue>({
     active: false,
     history: '',
+    showUserSettings: false,
   })
 
   const changeTerminalActive = (active?: boolean) => {
@@ -94,11 +96,14 @@ function TerminalContextProvider({ children }: TerminalContextProviderProps) {
     <TerminalContext.Provider value={{
       active: false,
       history: "",
+      showUserSettings: false,
       changeTerminalActive
     }}>
       <TerminalHotkey setTerminalState={setTerminalState} />
       {terminalState.active && <TerminalWindow setTerminalState={setTerminalState} terminalState={terminalState} />}
+      <UserSettings open={terminalState.showUserSettings} setOpen={(open: boolean) => { setTerminalState((prev) => ({ ...prev, showUserSettings: open })) }} />
       {children}
+
     </TerminalContext.Provider>
   )
 }
@@ -109,17 +114,15 @@ interface terminalWindowProps {
   setTerminalState: Dispatch<SetStateAction<TerminalContextValue>>;
 };
 
-function TerminalWindow(props: terminalWindowProps) {
-  const [command, setCommand] = useState("")
-  const [userSettingsPageOpen, setUserSettingsPageOpen] = useState<boolean>(false);
-
+function TerminalWindow({ terminalState, setTerminalState }: terminalWindowProps) {
   const router = useRouter();
+  const { user, checkSession } = useAuthenticate();
 
   return (
     <div >
       <CommandDialog
-        open={props.terminalState.active}
-        onOpenChange={() => props.setTerminalState((prev) => ({ ...prev, active: !prev.active }))}
+        open={terminalState.active}
+        onOpenChange={() => setTerminalState((prev) => ({ ...prev, active: !prev.active }))}
       >
         <Command>
           <CommandInput
@@ -134,19 +137,44 @@ function TerminalWindow(props: terminalWindowProps) {
             <CommandEmpty>No results found.</CommandEmpty>
             {Object.keys(Commands).map((cmd) => {
               const command = Commands[cmd as CommandName];
-              const sub_cmds = Object.values(command.sub_commands || {})
+              const sub_cmds = Object.values(command.sub_commands || {}) as CommandType[];
               const has_subs = sub_cmds.length !== 0
+              const user_is_authenticated = Boolean(user);
               if (has_subs) {
+                const visibleSubCommands = sub_cmds.filter((sub_cmd) => {
+                  if (sub_cmd.auth_required) {
+                    return user_is_authenticated;
+                  }
+
+                  return true;
+                });
+
+                if (visibleSubCommands.length === 0) {
+                  return null;
+                }
+
                 return (
-                  <CommandGroup heading={Commands[cmd as CommandName].name}>
-                    {sub_cmds.map((sub_cmd) => (
-                      <CommandItem key={sub_cmd.name} onSelect={() => sub_cmd.handler?.({ router })}>
+                  <CommandGroup heading={command.name} key={command.name}>
+                    {visibleSubCommands.map((sub_cmd) => (
+                      <CommandItem
+                        key={sub_cmd.name}
+                        onSelect={() =>
+                          sub_cmd.handler?.({
+                            terminalState,
+                            setTerminalState,
+                            checkSession,
+                            router,
+                          })
+                        }
+                      >
                         {sub_cmd.name}
-                        <span className="text-gray-500">{sub_cmd.usage}</span>
+                        <span className="text-gray-500">
+                          {sub_cmd.usage}
+                        </span>
                       </CommandItem>
                     ))}
                   </CommandGroup>
-                )
+                );
               } else {
                 return (
                   <CommandItem>{command.name}<span className="text-gray-500">{command.usage}</span></CommandItem>

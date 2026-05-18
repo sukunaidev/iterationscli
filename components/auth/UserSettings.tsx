@@ -17,11 +17,11 @@ import { useState } from "react";
 
 type Props = {
   open: boolean
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>
+  setOpen: (open_event: boolean) => void
 }
-function UserSettingsPage({ open, setOpen }: Props) {
+
+function UserSettings({ open, setOpen }: Props) {
   const { user } = useAuthenticate();
-  // const [open, setOpen] = useState(false)
 
   const updateUser = async () => {
 
@@ -59,4 +59,4 @@ function UserSettingsPage({ open, setOpen }: Props) {
 
 }
 
-export default UserSettingsPage
+export default UserSettings;
