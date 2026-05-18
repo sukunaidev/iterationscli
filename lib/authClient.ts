@@ -51,8 +51,12 @@ class AuthClient {
 
   async SignOut(): Promise<{ error?: string }> {
     try{
-      // TODO: call the backend and clear the auth cookie
-
+      const res = await fetch("/api/auth/sign-out");
+      if(!res.ok){
+        const body = await res.json();
+        console.error("Error when signing out: ", body.message)
+        return { error: "Error: could not sign out" }
+      }
       return {};
     }catch(error){
       console.error("Error in authClient when trying to sign out: ", error)

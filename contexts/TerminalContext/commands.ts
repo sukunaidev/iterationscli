@@ -13,7 +13,7 @@ export type CommandArguement = {
   descriprion: string;
 }
 
-export type CommandHandlerProps = { terminalState: TerminalContextValue, setTerminalState:  Dispatch<SetStateAction<TerminalContextValue>>, router?: AppRouterInstance };
+export type CommandHandlerProps = { terminalState: TerminalContextValue, setTerminalState:  Dispatch<SetStateAction<TerminalContextValue>>, router?: AppRouterInstance, checkSession?: () => void };
 export type CommandHandler = (props: CommandHandlerProps) => void;
 
 export type Command = {

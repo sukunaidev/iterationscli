@@ -116,7 +116,7 @@ interface terminalWindowProps {
 
 function TerminalWindow({ terminalState, setTerminalState }: terminalWindowProps) {
   const router = useRouter();
-  const { user } = useAuthenticate();
+  const { user, checkSession } = useAuthenticate();
 
   return (
     <div >
@@ -162,6 +162,7 @@ function TerminalWindow({ terminalState, setTerminalState }: terminalWindowProps
                           sub_cmd.handler?.({
                             terminalState,
                             setTerminalState,
+                            checkSession,
                             router,
                           })
                         }
