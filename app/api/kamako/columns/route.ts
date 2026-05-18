@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/client";
+import { col } from "motion/react-client";
 
 export async function PUT(req: NextRequest) {
   try {
@@ -69,4 +70,53 @@ export async function PUT(req: NextRequest) {
       { status: 500 }
     )
   }
+}
+export async function DELETE(req: NextRequest) {
+  try {
+    const { column_id } = await req.json();
+    const supabase = createClient();
+    if (!column_id) {
+      return NextResponse.json(
+        { message: "Value doesnt exist" },
+        { status: 400 }
+      )
+    }
+
+    //Delete tickets then delete column
+    const { error: ticketError } = await supabase
+      .from("tickets")
+      .delete()
+      .eq("column_id", column_id)
+
+    if (ticketError) {
+      console.log("Error with getting rid of tickets:", ticketError)
+    }
+
+    const { error: columnError } = await supabase
+      .from("columns")
+      .delete()
+      .eq("column_id", column_id)
+
+    if (columnError) {
+      console.log("Error deleting column:", columnError)
+    }
+
+    return NextResponse.json(
+      { message: "Success" },
+      { status: 200 }
+    )
+
+  }
+  catch (error: any) {
+    console.error("There was an error Updating and/or Creating a column:", error)
+    console.error("MESSAGE:", error?.message);
+    console.error("DETAIL:", error?.details);
+    return NextResponse.json(
+      { message: "Error with creating or updating column" },
+      { status: 500 }
+    )
+  }
+
+
+
 }
