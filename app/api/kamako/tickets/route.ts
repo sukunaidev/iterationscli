@@ -80,3 +80,42 @@ export async function PUT(req: NextRequest) {
   }
 
 }
+
+export async function DELETE(req: NextRequest) {
+  try {
+    const { ticket_id } = await req.json();
+    const supabase = createClient();
+
+    if (!ticket_id) {
+      return NextResponse.json(
+        { message: "Missing Value" },
+        { status: 400 }
+      )
+    }
+
+    const { error: deleteTicket } = await supabase
+      .from("tickets")
+      .delete()
+      .eq("ticket_id", ticket_id)
+
+    if (deleteTicket) {
+      console.log("Error deleting ticket:", deleteTicket)
+      return NextResponse.json(
+        { message: "Error deleting ticket" },
+        { status: 500 }
+      )
+
+    }
+    return NextResponse.json(
+      { success: true }
+    )
+
+  }
+  catch (error) {
+    console.log("Error with deleting Ticket:", error)
+    return NextResponse.json(
+      { message: "Error with deleting ticket" },
+      { status: 500 }
+    )
+  }
+}

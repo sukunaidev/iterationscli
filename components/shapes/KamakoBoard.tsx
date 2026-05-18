@@ -172,6 +172,57 @@ function KamakoBoard() {
 
   }
 
+  const deleteTicket = async (ticket_id: number) => {
+    try {
+      const res = await fetch("/api/kamako/tickets", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ticket_id: ticket_id
+        })
+      })
+
+      if (!res.ok) {
+        throw new Error("Error with deleting ticket")
+      }
+
+      setColumns(prev =>
+        prev.map(col => ({
+          ...col,
+          tickets: col.tickets.filter(
+            ticket => ticket.id !== ticket_id
+          )
+        }))
+      )
+    }
+    catch (error) {
+      console.log("Error deleting ticket:", error)
+    }
+  }
+
+  const deleteColumn = async (column_id: number) => {
+    try {
+      const res = await fetch("/api/kamako/columns", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          column_id: column_id
+        })
+      })
+      if (!res.ok) {
+        throw new Error("Error with deleting column");
+      }
+      setColumns(prev =>
+        prev.filter(col =>
+          col.id !== column_id
+        ))
+    }
+    catch (error) {
+      console.log("Error deleting column:", error)
+    }
+  }
+
+
 
 
 
@@ -184,22 +235,29 @@ function KamakoBoard() {
             <div className="flex gap-10" >
               {columns.map((column) => (
                 <div key={column.id}>
-                  <Input
-                    placeholder={column.headerName}
-                    value={column.headerName}
-                    onChange={(e) => {
-                      setColumns(prev => prev.map(col => //SetColumns updates the columns state with the prev/current state, then it will map/loopp through all the columns              
-                        col.id === column.id ? //it will check if the current col object id is = the column.id we are editing
-                          { ...col, headerName: e.target.value } : col //this is the iftrue:iffalse. if the condition above is true thenthe column value will be e.targe.value else it will stay the same
-                      ))
-                    }}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        updateColumn(column.boardId, column.id, (e.target as HTMLInputElement).value)
+                  <div className="flex gap-4">
+                    <Button variant={"destructive"}
+                      onClick={() =>
+                        deleteColumn(column.id)
                       }
-                    }}
+                    >{">"}</Button>
+                    <Input
+                      placeholder={column.headerName}
+                      value={column.headerName}
+                      onChange={(e) => {
+                        setColumns(prev => prev.map(col => //SetColumns updates the columns state with the prev/current state, then it will map/loopp through all the columns              
+                          col.id === column.id ? //it will check if the current col object id is = the column.id we are editing
+                            { ...col, headerName: e.target.value } : col //this is the iftrue:iffalse. if the condition above is true thenthe column value will be e.targe.value else it will stay the same
+                        ))
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          updateColumn(column.boardId, column.id, (e.target as HTMLInputElement).value)
+                        }
+                      }}
 
-                  ></Input>
+                    ></Input>
+                  </div>
                   <Separator className="mt-5" />
                   <CardContent>
                     <div className="flex flex-col p-2">
@@ -254,7 +312,9 @@ function KamakoBoard() {
                                       updateTicket(column.id, ticket.id, ticket.text, ticket.description ?? "")
                                     }
                                   >Save Ticket</AlertDialogAction>
-                                  <AlertDialogAction variant={"destructive"}>Delete Ticket</AlertDialogAction>
+                                  <AlertDialogAction variant={"destructive"}
+                                    onClickCapture={() => deleteTicket(ticket.id)}
+                                  >Delete Ticket</AlertDialogAction>
                                 </AlertDialogFooter>
                               </AlertDialogContent>
                             </AlertDialog>
