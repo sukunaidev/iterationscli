@@ -1,6 +1,6 @@
-import { AuthPayload } from "@/types/auth";
-import { NextRequest } from "next/server";
+import { AuthPayload } from "@/types/auth"; import { NextRequest } from "next/server";
 import { jwtVerify } from "jose"
+import { hashSync } from "bcrypt";
 
 const key = new TextEncoder().encode(process.env.JWT_SECRET || '');
 
@@ -18,4 +18,8 @@ export async function decode_token(req: NextRequest): Promise<AuthPayload> {
 export async function sign_token(): Promise<void> {
   // for now returns nothing, in the furture will return the token
   // as well as cookie config settings (httpOnly, maxAge, sameSite, etc...)
+}
+
+export async function hash_password(password: string): Promise<string> {
+    return hashSync(password, 10);
 }

@@ -23,8 +23,29 @@ type Props = {
 function UserSettings({ open, setOpen }: Props) {
   const { user } = useAuthenticate();
 
-  const updateUser = async () => {
+  const [username, setUsername] = useState(user?.username || "");
+  const [password, setPassword] = useState("");
 
+  const updateUser = async () => {
+    const payload = {
+      username,
+      password
+    };
+
+    try{
+      const res = await fetch("/api/auth/update-user", {
+        method: "PATCH",
+        body: JSON.stringify(payload)
+      });
+      if(!res.ok){
+        const body = (await res.json()) as { message: string };
+        console.error("Could not update user information:", body.message);
+      }else{
+        setOpen(false);
+      }
+    } catch(error) {
+      console.error("Serverside exception:", error);
+    }
   }
 
 
@@ -40,9 +61,17 @@ function UserSettings({ open, setOpen }: Props) {
               <AlertDialogTitle>Welcome to the Users Settings Page{user?.username}</AlertDialogTitle>
               <AlertDialogDescription>
                 Username
-                <Input placeholder={user?.username} />
+                <Input
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  placeholder={user?.username} 
+                />
                 Password
-                <Input />
+                <Input 
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
               </AlertDialogDescription>
             </AlertDialogHeader>
 
