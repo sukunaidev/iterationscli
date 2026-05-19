@@ -1,5 +1,7 @@
 # Iterationscli
 
+ # https://iterationscli.vercel.app/
+
 By **Ariana King and Harly Ponari**
 
 Iterationscli aka iterations command line interface is a web app for programmers by programmers.
@@ -88,7 +90,7 @@ After you update something, do the same.
 
 [...] Allows you to enter a ticket dashboard and allows you to edit it description. Dashboard gives u the option to save or delete a ticket
 
-# ALSO REMEMBER TO CLICK ENTER ON TICKET OR COLUMN INPUT HEADERS TO SAVE YOUR CHANGES.!!!!!!!!!
+# ALSO REMEMBER TO CLICK ENTER ON TICKET OR COLUMN INPUT HEADERS TO SAVE YOUR CHANGES!!!!!!!!!
 
 
 
